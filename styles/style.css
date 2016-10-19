@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:300,700');
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Libre Franklin", Helvetica, Arial, Sans-Serif;
+	font-weight: 300;
+	color: #2E2F31;
+}
+h2, h2 a:link, h2 a:visited, h2 a:hover {
+	color: white;
+	text-decoration: none;
+}
+h3 {
+	text-transform: uppercase;
+}
+ul {
+	margin: 0 0 1rem 0.5rem;
+}
+strong {
+	display: inline-block;
+	width: 5rem;
+	margin-right: 0.5rem;
+	text-align: right;
+}
+
+input {
+	font-size: 1rem;
+	padding: 0.5rem 1rem;
+	border: 1px solid #124378;
+}
+
+header {
+	color: white;
+	background-color: #16579C;
+	text-align: center;
+	padding:2rem 0 3rem 0;
+}
+section {
+	background-color: #F1F1F1;
+	padding: 3rem 0;
+}
+footer {
+	text-align: center;
+	background-color: #FFF;
+	padding:2rem 0 3rem 0;
+}
+button {
+	color: #FFF;
+	font-size: 1rem;
+	font-weight: 300;
+	padding: 0.5rem 1rem;
+	border: 1px solid #124378;
+	background-color: #16579C;
+	cursor: pointer;
+}
+button:hover {
+	background-color: #0E355E;
+}
+#results {
+	font-size: 0px;
+	max-width: 1440px;
+	margin: 0 auto;
+
+}
+
+.search_result {
+	font-size: 16px;
+	border: 1px solid #E6E6E6;
+	border-top: .34rem solid black;
+	padding: 2rem 1rem;
+	margin: 2.5%;
+	vertical-align: top;
+	background-color: #FFF;
+}
+.search_result.party_d {
+	border-top-color: #16579C;
+}
+.search_result.party_d h4 {
+	color: #16579C;
+}
+.search_result.party_r {
+	border-top-color: #9C1625;
+}
+.search_result.party_r h4 {
+	color: #9C1625;
+}
+
+@media (min-width: 768px) {
+	.search_result {
+		width: 45%;
+		display: inline-block;
+	}
+}
+@media (min-width: 1024px) {
+	.search_result {
+		width: 30%;
+		margin: 1.66%;
+		display: inline-block;
+	}	
+}
