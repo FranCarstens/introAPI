@@ -13,32 +13,42 @@
 
 
 // Global Variables
-var searchInput = document.querySelector('#searchBox'),
-	searchResultsContainer = document.querySelector('#results'),
-	moreButton = document.querySelector('#add10'),
-	enterKey = 13
+var searchOptions = document.querySelector('#searchOptions'),
+searchInput = document.querySelector('#searchBox'),
+searchResultsContainer = document.querySelector('#results'),
+moreButton = document.querySelector('#add12'),
+openStatesURL = 'https://congress.api.sunlightfoundation.com/legislators?apikey=c2451c1bffc14ebbb0b25d2c1ec05364',
+currentPage = 0,
+enterKey = 13
 
 // Format Data Function
 
 var formatData = function(dataObject) {
 
+	console.log(dataObject)
+
 	var searchResults = dataObject["results"]
-	searchResultsContainer.innerHTML = ""
-	var resultContainer = ""
+	// searchResultsContainer.innerHTML = ""
+	// var resultContainer = ""
 
-	for ( var key in searchResults ) {
+	for ( var i = 0; i < searchResults.length; i++ ) {
 
-		var resultString = "",
-			firstName = searchResults[key]["first_name"],
-			lastName = searchResults[key]["last_name"],
-			title = searchResults[key]["title"],
-			partyI = searchResults[key]["party"],
-			state = searchResults[key]["state_name"],
-			email = searchResults[key]["oc_email"],
-			website = searchResults[key]["website"],
-			facebook = searchResults[key]["facebook_id"],
-			twitter = searchResults[key]["twitter_id"],
-			end = searchResults[key]["term_end"]
+		if ( searchResults.length < 12 ) {
+			moreButton.style.visibility = "hidden"
+		}
+		else { moreButton.style.visibility = "visible" }
+
+			var resultString = "",
+		firstName = searchResults[i]["first_name"],
+		lastName = searchResults[i]["last_name"],
+		title = searchResults[i]["title"],
+		partyI = searchResults[i]["party"],
+		state = searchResults[i]["state_name"],
+		email = searchResults[i]["oc_email"],
+		website = searchResults[i]["website"],
+		facebook = searchResults[i]["facebook_id"],
+		twitter = searchResults[i]["twitter_id"],
+		end = searchResults[i]["term_end"]
 
 		resultString += '<div class="search_result ' + firstName.toLowerCase() + '_' + lastName.toLowerCase() + ' party_' + partyI.toLowerCase() + '">'
 		resultString += '<h3>' + firstName + ' ' + lastName + '</h3>'
@@ -48,45 +58,88 @@ var formatData = function(dataObject) {
 		resultString += '</div>'
 
 		searchResultsContainer.innerHTML += resultString
+		
 
 	}
 }
 
-// Search Data Function
 
-var searchArea = function(keyPress) {
+// Build Search Select
 
-	console.log(keyPress)
+
+var buildSelect = function(dataObject) {
+	
+	var firstObject = dataObject["results"],
+	optionString = ""
+
+
+	for ( var key in firstObject[0]) {
+
+		var key_string = key.replace(/_/g, ' ');
+		optionString += '<option value="' + key + '">' + key_string + ' (' + firstObject[0][key] + ')</option>'
+	}
+
+	searchOptions.innerHTML = optionString
+
+}
+
+
+var selectPromise = function() {
+	
+	var promise = $.getJSON(openStatesURL)
+	promise.then(buildSelect)
+
+}
+
+
+
+// Search Data
+
+var searchObjects = function(keyPress) {
+
 	if ( keyPress.keyCode === enterKey ) {
-		var searchQuery = searchInput.value
-		searchFunction(searchQuery)
+		var searchRange = searchOptions.value
+		var searchQuery = event.target.value
+		searchResultsContainer.innerHTML = ""
+		event.target.value = ""
+		currentPage = 0
+		searchFunction('&' + searchRange + '=' + searchQuery)
 	}
 	
 }
 
+// Page Counter
 
-// Request Data Function via "zipcode"
 
-var searchFunction  = function(zipCode) {
 
-	if (zipCode) {
-		var openStatesURL = 'https://congress.api.sunlightfoundation.com/legislators/locate?apikey=c2451c1bffc14ebbb0b25d2c1ec05364&zip=' + zipCode	
-	}
-	else if (!zipCode) {
-		var openStatesURL = 'https://congress.api.sunlightfoundation.com/legislators/?apikey=c2451c1bffc14ebbb0b25d2c1ec05364&per_page=10'
-	}
+var addPage = function () {
+	
+	console.log(currentPage)
+	currentPage = currentPage + 1
+	console.log(currentPage)
+	return('&per_page=12&page=' + currentPage)
 
-	var promise = $.getJSON(openStatesURL)
+}
+
+// Promise
+
+var searchFunction  = function(searchQuery) {
+
+	openStatesURL = 'https://congress.api.sunlightfoundation.com/legislators?apikey=c2451c1bffc14ebbb0b25d2c1ec05364'
+	if ( typeof searchQuery === 'string' ) openStatesURL = openStatesURL + searchQuery
+		else openStatesURL = openStatesURL
+	newPage = addPage()		
+	newOpenStatesURL = openStatesURL + newPage
+
+	var promise = $.getJSON(newOpenStatesURL)
 	promise.then(formatData)
 
 }
 
-searchInput.addEventListener('keydown', searchArea)
+// Events Listeners
+
+searchInput.addEventListener('keydown', searchObjects)
 moreButton.addEventListener('click', searchFunction)
 searchFunction()
-
-
-
-
-
+selectPromise()
 

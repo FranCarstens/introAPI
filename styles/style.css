@@ -8,6 +8,7 @@ body {
 	font-family: "Libre Franklin", Helvetica, Arial, Sans-Serif;
 	font-weight: 300;
 	color: #2E2F31;
+	line-height: 150%;	
 }
 h2, h2 a:link, h2 a:visited, h2 a:hover {
 	color: white;
@@ -19,7 +20,10 @@ h3 {
 ul {
 	margin: 0 0 1rem 0.5rem;
 }
-strong {
+header strong {
+	margin: 0 1rem 0 2rem;
+}
+section strong {
 	display: inline-block;
 	width: 5rem;
 	margin-right: 0.5rem;
@@ -30,6 +34,8 @@ input {
 	font-size: 1rem;
 	padding: 0.5rem 1rem;
 	border: 1px solid #124378;
+	line-height: 150%;
+	font-family: "Libre Franklin", Helvetica, Arial, Sans-Serif;
 }
 
 header {
@@ -59,6 +65,19 @@ button {
 button:hover {
 	background-color: #0E355E;
 }
+
+select {
+	-webkit-appearance: none;
+	font-size: 1rem;
+	padding: 0.5rem 1rem;
+	border: 1px solid #124378;
+	font-family: "Libre Franklin", Helvetica, Arial, Sans-Serif;
+	line-height: 150%;
+	border-radius: 0;
+	cursor: pointer;
+	text-transform: capitalize;
+}
+
 #results {
 	font-size: 0px;
 	max-width: 1440px;
